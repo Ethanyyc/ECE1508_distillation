@@ -115,19 +115,7 @@ This helps prevent overfitting. If training loss keeps decreasing but validation
 
 ## Dataset
 
-The notebook uses WikiText-103 from Hugging Face for final training:
-
-```python
-load_dataset("Salesforce/wikitext", "wikitext-103-raw-v1")
-```
-
-WikiText-103(~100M tokens) is larger than WikiText-2(~2M tokens), so it gives the student more training text. This should help the student learn more general language patterns and reduce the chance of memorizing a small training set.
-
-For quick debugging, WikiText-2 can still be used by changing:
-
-```python
-CFG["dataset_config"] = "wikitext-2-raw-v1"
-```
+The notebook uses wikitext-2-raw-v1(~2M tokens) from Hugging Face for final training. We will try WikiText-103(~100M tokens), as it is much larger than wikitext-2-raw-v1, the training time will be very long
 
 ## Evaluation Metrics
 
