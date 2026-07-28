@@ -10,7 +10,7 @@ The goal is to compress GPT-2 into a smaller student model while keeping reasona
 2. **Corpus only**: learns only from the real next-token labels in the dataset.
 3. **Teacher only**: learns only from the teacher's soft probability distribution.
 
-The project also runs a **temperature sweep** before final training. Temperature controls how soft the teacher's output distribution is during distillation. We train a throwaway student at each of `T = 1, 2, 4, 7, 10, 15, 20, 30`, then keep the temperature with the best validation perplexity for the final students. This helps us learn how sensitive distillation is to temperature and whether softer teacher probabilities improve student learning.
+The project also runs a **temperature sweep** before final training. Temperature controls how soft the teacher's output distribution is during distillation. We train a throwaway student at each of `T = 1, 2, 4, 7, 10, 15`, then keep the temperature with the best validation perplexity for the final students. This helps us learn how sensitive distillation is to temperature and whether softer teacher probabilities improve student learning.
 
 The sweep runs are trained with the **teacher-only** objective. Temperature affects only `teacher_loss`, so if the sweep used the combined loss then half of every gradient would come from `corpus_loss` no matter what the temperature was, diluting the effect we are trying to measure. See [Temperature Sweep Design](#temperature-sweep-design).
 
