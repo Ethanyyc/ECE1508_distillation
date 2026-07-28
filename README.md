@@ -129,6 +129,8 @@ stop when validation perplexity stops improving
 
 This project uses `early_stopping_patience = 2` and a budget of at most 15 epochs, so a student stops as soon as two consecutive epochs fail to beat its best validation perplexity.
 
+Stopping is not quite enough on its own. When training halts, the model in memory is the one from the epoch that failed to improve, which is one or two epochs past its best. `train_model` therefore keeps a copy of the weights from the best epoch and restores them before returning, so the model that is saved, evaluated on the test set, and used for text generation is the same model early stopping selected. This also keeps the final students consistent with the temperature sweep, which ranks temperatures by their best epoch rather than their last.
+
 This helps prevent overfitting. If training loss keeps decreasing but validation perplexity stops improving, the student may be memorizing the training data instead of learning patterns that generalize.
 
 ## Dataset
@@ -195,9 +197,9 @@ only once: if the data order differed between runs, part of any perplexity gap w
 come from the shuffle rather than from the loss function.
 
 Note that the students do **not** all run for the same number of epochs. Each one trains until its
-own validation perplexity stops improving, so every method is given the chance to reach its own best
-result instead of being cut off at a fixed epoch. The report lists the number of epochs each student
-actually completed.
+own validation perplexity stops improving, and the weights from its best epoch are restored, so every
+method is compared at its own best result instead of at a fixed epoch. The report lists the number of
+epochs each student completed and which epoch its reported model came from.
 
 The only difference is the training loss:
 
