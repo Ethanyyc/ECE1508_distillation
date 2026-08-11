@@ -7,3 +7,6 @@
 
 - Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. **DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter**. arXiv:1910.01108, 2019. <https://arxiv.org/pdf/1910.01108>
   - Transformer distillation paper that combines language modeling loss, teacher soft-target distillation loss, and hidden-state alignment. Useful for justifying a combined hard-label and soft-label training objective.
+
+- Jared Kaplan, Sam McCandlish, Tom Henighan, et al. **Scaling Laws for Neural Language Models**. arXiv:2001.08361, 2020. <https://arxiv.org/abs/2001.08361>
+  - Describes empirical scaling laws relating model size, dataset size, and compute to loss; useful for model sizing and resource estimates.
