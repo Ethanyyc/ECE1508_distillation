@@ -120,7 +120,7 @@ The final written report is available at [`doc/final_report.pdf`](doc/final_repo
 ```text
 distillation.ipynb    Main experiment notebook
 README.md             Setup and project overview
-doc/                  Proposal and final report
+doc/                  Proposal, final report and presentation slides
 reference/            Reference papers and PDFs
 results/              Output plots and executed notebook PDF
 ```
