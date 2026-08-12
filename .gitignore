@@ -1,0 +1,10 @@
+# Trained model weights: written by the notebook and experiments/run_one.py.
+# Roughly 119 MB per student, so they are regenerated rather than tracked.
+checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/

@@ -1,0 +1,59 @@
+[a0.50_T0.5_gm] alpha=0.5 temperature=0.5 method=combined grad_match=True
+[a0.50_T0.5_gm] device=cuda visible=1 env={'torch': '2.11.0+rocm7.2', 'transformers': '5.13.0', 'datasets': '5.0.0', 'device_count': 1, 'gpu': 'AMD Radeon PRO W7900'}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[a0.50_T0.5_gm] batches: train=145 val=15 test=18
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 21557.06it/s]
+[a0.50_T0.5_gm] student params: 30,339,456
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 1: kd_scale = 1.2123
+[transformers] `loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 1/50: train loss 4.7453, val ppl 1140.61
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 2: kd_scale = 1.3241
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 2/50: train loss 4.2026, val ppl 661.28
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 3: kd_scale = 1.0911
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 3/50: train loss 3.7714, val ppl 490.09
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 4: kd_scale = 0.7683
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 4/50: train loss 3.4133, val ppl 408.05
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 5: kd_scale = 0.9631
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 5/50: train loss 3.3829, val ppl 354.27
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 6: kd_scale = 0.8652
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 6/50: train loss 3.1972, val ppl 306.55
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 7: kd_scale = 0.9451
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 7/50: train loss 3.1108, val ppl 275.68
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 8: kd_scale = 1.0082
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 8/50: train loss 3.0156, val ppl 243.81
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 9: kd_scale = 0.9722
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 9/50: train loss 2.8790, val ppl 221.84
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 10: kd_scale = 1.1386
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 10/50: train loss 2.8376, val ppl 203.87
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 11: kd_scale = 1.1507
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 11/50: train loss 2.7337, val ppl 190.40
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 12: kd_scale = 1.0746
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 12/50: train loss 2.6045, val ppl 178.18
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 13: kd_scale = 1.1807
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 13/50: train loss 2.5543, val ppl 168.28
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 14: kd_scale = 1.1895
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 14/50: train loss 2.4781, val ppl 162.34
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 15: kd_scale = 1.2199
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 15/50: train loss 2.4130, val ppl 158.85
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 16: kd_scale = 1.4165
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 16/50: train loss 2.4094, val ppl 154.71
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 17: kd_scale = 1.3002
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 17/50: train loss 2.3069, val ppl 150.72
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 18: kd_scale = 1.3320
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 18/50: train loss 2.2582, val ppl 150.11
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 19: kd_scale = 1.3878
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 19/50: train loss 2.2198, val ppl 149.72
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 20: kd_scale = 1.3302
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 20/50: train loss 2.1574, val ppl 148.02
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 21: kd_scale = 1.4276
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 21/50: train loss 2.1371, val ppl 147.89
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 22: kd_scale = 1.4816
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 22/50: train loss 2.1099, val ppl 149.37
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 23: kd_scale = 1.3982
+[a0.50_T0.5_gm] a0.50_T0.5_gm epoch 23/50: train loss 2.0449, val ppl 148.44
+[a0.50_T0.5_gm] Early stopping a0.50_T0.5_gm: validation perplexity did not improve.
+[a0.50_T0.5_gm] Restored a0.50_T0.5_gm to epoch 21 (val ppl 147.89)
+[a0.50_T0.5_gm] final: val ppl 147.89, test ppl 153.95
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00, 11.09it/s]
+[a0.50_T0.5_gm] saved checkpoint -> /home/jarvis/ECE1508_distillation/checkpoints/a0.50_T0.5_gm
+[a0.50_T0.5_gm] wrote /home/jarvis/ECE1508_distillation/results/runs/a0.50_T0.5_gm.json (best epoch 21, best val ppl 147.89, test ppl 153.95)
