@@ -1,0 +1,62 @@
+[a0.00_T1] alpha=0.0 temperature=1.0 method=teacher_only grad_match=False
+[a0.00_T1] device=cuda visible=0 env={'torch': '2.11.0+rocm7.2', 'transformers': '5.13.0', 'datasets': '5.0.0', 'device_count': 1, 'gpu': 'AMD Radeon PRO W7900'}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[a0.00_T1] batches: train=145 val=15 test=18
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 22579.55it/s]
+[a0.00_T1] student params: 30,339,456
+[transformers] `loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+[a0.00_T1] a0.00_T1 epoch 1/50: train loss 3.8361, val ppl 682.77
+[a0.00_T1] a0.00_T1 epoch 2/50: train loss 2.9142, val ppl 443.71
+[a0.00_T1] a0.00_T1 epoch 3/50: train loss 2.5612, val ppl 354.09
+[a0.00_T1] a0.00_T1 epoch 4/50: train loss 2.3142, val ppl 295.06
+[a0.00_T1] a0.00_T1 epoch 5/50: train loss 2.0970, val ppl 245.67
+[a0.00_T1] a0.00_T1 epoch 6/50: train loss 1.9032, val ppl 208.86
+[a0.00_T1] a0.00_T1 epoch 7/50: train loss 1.7369, val ppl 184.15
+[a0.00_T1] a0.00_T1 epoch 8/50: train loss 1.6018, val ppl 165.31
+[a0.00_T1] a0.00_T1 epoch 9/50: train loss 1.4855, val ppl 152.05
+[a0.00_T1] a0.00_T1 epoch 10/50: train loss 1.3861, val ppl 140.68
+[a0.00_T1] a0.00_T1 epoch 11/50: train loss 1.3039, val ppl 132.39
+[a0.00_T1] a0.00_T1 epoch 12/50: train loss 1.2332, val ppl 126.31
+[a0.00_T1] a0.00_T1 epoch 13/50: train loss 1.1719, val ppl 122.07
+[a0.00_T1] a0.00_T1 epoch 14/50: train loss 1.1180, val ppl 118.59
+[a0.00_T1] a0.00_T1 epoch 15/50: train loss 1.0713, val ppl 113.92
+[a0.00_T1] a0.00_T1 epoch 16/50: train loss 1.0309, val ppl 113.13
+[a0.00_T1] a0.00_T1 epoch 17/50: train loss 0.9950, val ppl 111.24
+[a0.00_T1] a0.00_T1 epoch 18/50: train loss 0.9615, val ppl 108.87
+[a0.00_T1] a0.00_T1 epoch 19/50: train loss 0.9316, val ppl 105.26
+[a0.00_T1] a0.00_T1 epoch 20/50: train loss 0.9045, val ppl 104.29
+[a0.00_T1] a0.00_T1 epoch 21/50: train loss 0.8801, val ppl 103.82
+[a0.00_T1] a0.00_T1 epoch 22/50: train loss 0.8589, val ppl 102.18
+[a0.00_T1] a0.00_T1 epoch 23/50: train loss 0.8386, val ppl 101.75
+[a0.00_T1] a0.00_T1 epoch 24/50: train loss 0.8197, val ppl 100.22
+[a0.00_T1] a0.00_T1 epoch 25/50: train loss 0.8019, val ppl 100.36
+[a0.00_T1] a0.00_T1 epoch 26/50: train loss 0.7854, val ppl 98.63
+[a0.00_T1] a0.00_T1 epoch 27/50: train loss 0.7711, val ppl 97.85
+[a0.00_T1] a0.00_T1 epoch 28/50: train loss 0.7583, val ppl 97.08
+[a0.00_T1] a0.00_T1 epoch 29/50: train loss 0.7461, val ppl 96.43
+[a0.00_T1] a0.00_T1 epoch 30/50: train loss 0.7308, val ppl 95.29
+[a0.00_T1] a0.00_T1 epoch 31/50: train loss 0.7212, val ppl 94.82
+[a0.00_T1] a0.00_T1 epoch 32/50: train loss 0.7116, val ppl 94.74
+[a0.00_T1] a0.00_T1 epoch 33/50: train loss 0.7016, val ppl 93.96
+[a0.00_T1] a0.00_T1 epoch 34/50: train loss 0.6938, val ppl 93.16
+[a0.00_T1] a0.00_T1 epoch 35/50: train loss 0.6844, val ppl 93.00
+[a0.00_T1] a0.00_T1 epoch 36/50: train loss 0.6747, val ppl 92.28
+[a0.00_T1] a0.00_T1 epoch 37/50: train loss 0.6663, val ppl 92.79
+[a0.00_T1] a0.00_T1 epoch 38/50: train loss 0.6589, val ppl 91.59
+[a0.00_T1] a0.00_T1 epoch 39/50: train loss 0.6511, val ppl 91.53
+[a0.00_T1] a0.00_T1 epoch 40/50: train loss 0.6456, val ppl 90.14
+[a0.00_T1] a0.00_T1 epoch 41/50: train loss 0.6380, val ppl 90.24
+[a0.00_T1] a0.00_T1 epoch 42/50: train loss 0.6318, val ppl 89.61
+[a0.00_T1] a0.00_T1 epoch 43/50: train loss 0.6247, val ppl 89.26
+[a0.00_T1] a0.00_T1 epoch 44/50: train loss 0.6205, val ppl 89.92
+[a0.00_T1] a0.00_T1 epoch 45/50: train loss 0.6142, val ppl 89.25
+[a0.00_T1] a0.00_T1 epoch 46/50: train loss 0.6080, val ppl 88.71
+[a0.00_T1] a0.00_T1 epoch 47/50: train loss 0.6021, val ppl 88.94
+[a0.00_T1] a0.00_T1 epoch 48/50: train loss 0.5980, val ppl 88.66
+[a0.00_T1] a0.00_T1 epoch 49/50: train loss 0.5935, val ppl 88.32
+[a0.00_T1] a0.00_T1 epoch 50/50: train loss 0.5887, val ppl 87.10
+[a0.00_T1] Restored a0.00_T1 to epoch 50 (val ppl 87.10)
+[a0.00_T1] final: val ppl 87.10, test ppl 88.06
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00, 11.15it/s]
+[a0.00_T1] saved checkpoint -> /home/jarvis/ECE1508_distillation/checkpoints/a0.00_T1
+[a0.00_T1] wrote /home/jarvis/ECE1508_distillation/results/runs/a0.00_T1.json (best epoch 50, best val ppl 87.10, test ppl 88.06)

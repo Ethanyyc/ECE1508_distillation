@@ -1,0 +1,31 @@
+Grid: 8 configs across 2 GPU(s)
+
+  a0.00_T1           alpha=0.00  T=1    gm=False queued      teacher only (= published 'Teacher only')
+  a0.50_T0.5         alpha=0.50  T=0.5  gm=False queued      new: T < 1 (sharpened teacher)
+  a0.50_T0.5_gm      alpha=0.50  T=0.5  gm=True  queued      new: T=0.5 with KD gradient matched to T=1
+  a0.25_T1           alpha=0.25  T=1    gm=False queued      new
+  a0.50_T1           alpha=0.50  T=1    gm=False queued      combined (= published 'Teacher + corpus'); shared with T axis
+  a0.50_T2           alpha=0.50  T=2    gm=False queued      new: T > 1 (softened teacher)
+  a0.75_T1           alpha=0.75  T=1    gm=False queued      new
+  a1.00_T1           alpha=1.00  T=1    gm=False queued      corpus only (= published 'Corpus only'); skips teacher forward
+
+8 to run, 0 already complete.
+[t+   0.0m][gpu0] START a0.00_T1 -> /home/jarvis/ECE1508_distillation/results/logs/a0.00_T1.log
+[t+   0.3m][gpu1] START a0.50_T0.5 -> /home/jarvis/ECE1508_distillation/results/logs/a0.50_T0.5.log
+[t+  51.5m][gpu1] DONE  a0.50_T0.5 (51.1 min)
+[t+  51.5m][gpu1] START a0.50_T0.5_gm -> /home/jarvis/ECE1508_distillation/results/logs/a0.50_T0.5_gm.log
+[t+ 107.5m][gpu1] DONE  a0.50_T0.5_gm (56.1 min)
+[t+ 107.5m][gpu1] START a0.25_T1 -> /home/jarvis/ECE1508_distillation/results/logs/a0.25_T1.log
+[t+ 115.1m][gpu0] DONE  a0.00_T1 (115.1 min)
+[t+ 115.1m][gpu0] START a0.50_T1 -> /home/jarvis/ECE1508_distillation/results/logs/a0.50_T1.log
+[t+ 173.4m][gpu0] DONE  a0.50_T1 (58.4 min)
+[t+ 173.4m][gpu0] START a0.50_T2 -> /home/jarvis/ECE1508_distillation/results/logs/a0.50_T2.log
+[t+ 216.8m][gpu1] DONE  a0.25_T1 (109.3 min)
+[t+ 216.8m][gpu1] START a0.75_T1 -> /home/jarvis/ECE1508_distillation/results/logs/a0.75_T1.log
+[t+ 229.3m][gpu0] DONE  a0.50_T2 (55.8 min)
+[t+ 229.3m][gpu0] START a1.00_T1 -> /home/jarvis/ECE1508_distillation/results/logs/a1.00_T1.log
+[t+ 245.8m][gpu0] DONE  a1.00_T1 (16.5 min)
+[t+ 263.0m][gpu1] DONE  a0.75_T1 (46.2 min)
+
+Grid finished in 263.0 min (4.38 h).
+All runs completed successfully.

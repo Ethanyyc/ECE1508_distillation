@@ -17,6 +17,7 @@ linkcolor: blue
 urlcolor: blue
 header-includes:
   - \usepackage{booktabs}
+  - \usepackage{graphicx}
   - \usepackage{float}
   - \usepackage{etoolbox}
   - \AtBeginEnvironment{longtable}{\small}
@@ -100,7 +101,9 @@ $$
 \frac{\partial\mathcal{L}_{\mathrm{KD}}}{\partial z_{S,i}}
 =T\big(p_i(T)-q_i(T)\big)=O(1).
 $$
-One $1/T$ comes from the chain rule, since the softmax input is $z_{S,i}/T$, and a second comes from the bracket, because a higher $T$ flattens both distributions and shrinks their difference. The $T^2$ factor cancels both, keeping the teacher signal at a similar strength at every temperature. This matters because the corpus loss uses unscaled logits and does not shrink with $T$: without the correction, the sweep would measure gradient size rather than the information in the softened targets. At $T=1$ the factor equals one, so our final runs are unchanged.
+One $1/T$ comes from the chain rule, since the softmax input is $z_{S,i}/T$, and a second comes from the bracket, because a higher $T$ flattens both distributions and shrinks their difference. The $T^2$ factor cancels both **in the large-$T$ regime**, keeping the teacher signal at a comparable strength for $T \gtrsim 1$. This matters because the corpus loss uses unscaled logits and does not shrink with $T$: without the correction, the sweep would measure gradient size rather than the information in the softened targets. At $T=1$ the factor equals one, so our final runs are unchanged.
+
+The cancellation is asymptotic, however, and is not guaranteed below $T=1$. The step $p_i(T)-q_i(T)=O(1/T)$ assumes $T$ is large enough that both distributions are near-uniform; as $T\to 0$ they instead sharpen toward one-hot and their difference saturates. Probing a cross-entropy-trained student confirms the correction is imperfect there: with the $T^2$ factor applied, the KD gradient norm measured 2.784 at $T=0.5$ against 0.739 at $T=1$, so the teacher signal arrives roughly $3.8\times$ stronger. A mismatch of that size would confound temperature with effective learning rate, so we treat it as a threat to validity and test it directly with a gradient-matched control run in the $\alpha$ and temperature grid.
 
 # Methodology
 
@@ -160,15 +163,70 @@ Student: Corpus only & 30.3 & 119.1 & 214.5 & 227.2 & 294.3 & 13 \\
 
 **What the text looks like.** With greedy decoding, the teacher writes fluent sentences while all three 30M students fall into repetition, expected at this size. Still, the teacher-guided students are noticeably less broken than the corpus-only one, which collapses into tight loops (for example, repeating "city" over and over). A couple of transcripts are in Appendix C.
 
+## The $\alpha$ and Temperature Grid
+
+The experiments above fix $\alpha=0.5$ and pick $T$ from a five-epoch sweep, which leaves two questions open: what $\alpha$ actually does, and what happens when the teacher distribution is *sharpened* ($T<1$) rather than softened. We therefore trained eight more students, each to early stopping under the identical recipe (Appendix B), on a single machine so that every point is mutually comparable.
+
+Because $\alpha$ weights the corpus term in $\mathcal{L}=\alpha\,\mathrm{CE}+(1-\alpha)\,\mathcal{L}_{\text{KD}}$, the three students of Table 1 already sit at $\alpha=1$ (corpus only), $\alpha=0.5$ (combined) and $\alpha=0$ (teacher only). The grid fills in $\alpha\in\{0.25,0.75\}$ at $T=1$ to complete a five-point curve, and adds $T\in\{0.5,2\}$ at $\alpha=0.5$ under **full** training rather than the five-epoch budget of Figure 1. The three re-run baselines land close to Table 1 despite the different machine (corpus-only 217.5 vs 214.5, combined 108.2 vs 111.2, teacher-only 87.1 vs 89.4), so the two sets of numbers tell the same story.
+
+\begin{table}[htbp]
+\centering
+\scriptsize
+\begin{tabular}{rrcrrrr}
+\toprule
+$\alpha$ & $T$ & Grad-matched & Best ep. & Best val PPL & Test PPL & Val PPL @15 ep \\
+\midrule
+0.00 (teacher only) & 1 & no & 50$^{*}$ & 87.10 & 88.06 & 113.92 \\
+\textbf{0.25} & 1 & no & 43 & \textbf{83.22} & \textbf{85.59} & \textbf{104.84} \\
+0.50 (combined) & 1 & no & 22 & 108.21 & 112.60 & 114.93 \\
+0.75 & 1 & no & 17 & 145.62 & 152.44 & 145.66 \\
+1.00 (corpus only) & 1 & no & 14 & 217.50 & 226.90 & 217.50 \\
+\midrule
+0.50 & 0.5 & no & 19 & 148.26 & 155.96 & 153.75 \\
+0.50 & 2 & no & 21 & 107.43 & 110.90 & 119.59 \\
+0.50 & 0.5 & \textbf{yes} & 21 & 147.89 & 153.95 & 158.85 \\
+\bottomrule
+\end{tabular}
+\caption{The $\alpha$ and temperature grid. $^{*}$reached the 50-epoch cap while still improving.}
+\end{table}
+
+**Effect of $\alpha$: the optimum is interior.** Test perplexity falls from 226.90 at $\alpha=1$ to 152.44 at $\alpha=0.75$ and 112.60 at $\alpha=0.5$, reaches its minimum of **85.59 at $\alpha=0.25$**, then rises slightly to 88.06 at $\alpha=0$. Pure distillation is therefore not quite optimal: keeping a *small* amount of hard-label grounding beats discarding the corpus signal entirely. The curve is strongly asymmetric. Moving from the optimum toward the teacher costs only 2.5 perplexity ($\alpha=0.25\to0$), whereas moving the same distance toward the corpus costs 67 ($\alpha=0.25\to0.75$). The practical reading is that the teacher signal should dominate the objective, with the corpus acting as a light anchor rather than an equal partner.
+
+The stopping epochs make the mechanism visible. As $\alpha$ increases, the best epoch falls monotonically -- 50, 43, 22, 17, 14 -- so the more hard-label pressure the objective carries, the sooner the student overfits WikiText-2. This is direct support across five points for reading soft targets as a regularizer.
+
+\begin{figure}[t]
+\centering
+\vspace{-6pt}
+\makebox[\linewidth][c]{\includegraphics[width=1.10\linewidth]{../results/alpha_sweep.png}}
+\vspace{-8pt}
+\caption{Effect of $\alpha$ at $T=1$. Left: perplexity against $\alpha$, with the fixed 15-epoch budget overlaid. Middle: validation curves. Right: stopping epoch, which falls monotonically as $\alpha$ rises.}
+\end{figure}
+
+**How to read the $\alpha$ curve honestly.** Because early stopping fires at very different epochs, the raw curve partly reflects *how long each objective trains* rather than its intrinsic quality. We therefore also record the best validation perplexity within a fixed 15-epoch budget. The ranking is unchanged -- $\alpha=0.25$ still leads at 104.84, ahead of $\alpha=0$ at 113.92 and $\alpha=0.5$ at 114.93 -- so the advantage is not merely an artifact of training longer. One limitation remains: $\alpha=0$ was still improving when it hit the 50-epoch cap, so with a larger budget the two best points could converge or swap. With a single seed we do not read the 2.5-perplexity gap between them as decisive.
+
+**Effect of temperature.** Under full training at $\alpha=0.5$, test perplexity was 155.96 at $T=0.5$, 112.60 at $T=1$ and 110.90 at $T=2$. Sharpening the teacher is clearly harmful: $T=0.5$ is about 43 perplexity worse than $T=1$. Softening to $T=2$ gives a nominal 1.7-point improvement, but with one seed we treat $T=1$ and $T=2$ as indistinguishable and do not claim $T=2$ is better. The robust conclusion is one-sided: the optimum lies at or just above $T=1$, and going below 1 costs a great deal. This also revises the impression left by Figure 1, where the short sweep placed the optimum at the edge of its grid; extending below $T=1$ shows the optimum is genuinely interior.
+
+**Ruling out the $T^2$ confound.** Since the $T^2$ correction is imperfect below $T=1$, the poor $T=0.5$ result could in principle have reflected a larger effective step size rather than the sharpened target itself. We tested this by repeating the $T=0.5$ run with the KD term rescaled by $c=\|\nabla\mathcal{L}_{\text{KD}}(T{=}1)\|/\|\nabla\mathcal{L}_{\text{KD}}(T{=}0.5)\|$, recalibrated every epoch on a fixed probe batch. The control reached test perplexity 153.95 against 155.96 for the standard convention -- a 2.0-point difference, roughly $22\times$ smaller than the 43-point penalty of using $T=0.5$ at all. The $T=0.5$ result is therefore a real consequence of sharpening the teacher, not an artifact of gradient scale.
+
+The calibration itself did not behave as the static probe suggested, which is worth reporting. Measured on a cross-entropy-trained student the $T=0.5$ gradient was $3.8\times$ too large, implying $c\approx0.26$; measured *during* KD training, the required correction averaged $c=1.18$ and exceeded 1 in 78\% of epochs, ranging from 0.77 to 1.48. Once the student is actually being trained to match the teacher, its distribution tracks the teacher's closely enough that the gradient mismatch at $T=0.5$ largely disappears. The $T^2$ factor thus works better in practice at $T<1$ than the asymptotic argument predicts -- a null result, but one we could only establish by running the control.
+
+\begin{figure}[t]
+\centering
+\vspace{-6pt}
+\makebox[\linewidth][c]{\includegraphics[width=1.10\linewidth]{../results/temperature_alpha_grid.png}}
+\vspace{-8pt}
+\caption{Effect of $T$ at $\alpha=0.5$. Left: perplexity against $T$, with the gradient-matched $T=0.5$ control starred. Middle: validation curves. Right: the per-epoch correction $c$, mostly above 1, contradicting the static probe's prediction.}
+\end{figure}
+
 # Discussion
 
 Here we answer the five questions and address points that came up around the presentation.
 
 **Q1 — Does distillation help?** Yes. Both teacher-guided students roughly halve the corpus-only test perplexity (90.7 and 115.6 vs.\ 227.2).
 
-**Q2 — Is the teacher alone enough?** It was not just enough, it was the best, which we did not expect this at the beginning. We think the reason is overfitting. Our corpus is small, and the hard labels push the student to memorize exact next words, so the corpus-only run tops out at epoch 13 and the combined run at 22. The teacher's soft distribution is a gentler, information-rich target that is harder to memorize, so the teacher-only student keeps improving until epoch 39. This lines up with Hinton et al.'s observation that soft targets act like a regularizer [1]. The combined loss sits in between because it still carries some of the hard-label pressure.
+**Q2 — Is the teacher alone enough?** Almost, but not quite. Among the three original objectives the teacher-only student was best, which we did not expect at the beginning. Sweeping $\alpha$ shows why and refines the answer: the optimum is interior, at $\alpha=0.25$ (test perplexity 85.59) rather than at $\alpha=0$ (88.06). A light hard-label term helps, while a heavy one is very costly ($\alpha=0.75$ gives 152.44). Our original $\alpha=0.5$ simply sat on the wrong side of the optimum, which is why teacher-only beat it. The overfitting explanation still holds and is now visible across the whole sweep: the best epoch falls monotonically from 50 at $\alpha=0$ to 14 at $\alpha=1$, so hard labels drive the student to memorize the small corpus sooner. The teacher's soft distribution is a gentler, information-rich target that is harder to memorize, which lines up with Hinton et al.'s observation that soft targets act like a regularizer [1].
 
-**Q3 — Why does $T=1$ win?** The best temperature drops as the student gets smaller. A high temperature asks the student to match the teacher's whole 50,257-way distribution, but a 30M model does not have the capacity for that; it is better off spending its capacity getting the top token right, which a sharp ($T=1$) target emphasizes. Hinton et al. show exactly this trend for small students [1], and here the sweet spot lands at the edge of our grid, $T=1$.
+**Q3 — Which temperature is best?** Our original sweep put the optimum at the edge of its grid ($T=1$), which left open whether an even sharper target would do better. Extending below 1 answers this: at $\alpha=0.5$ under full training, $T=0.5$ reaches only 155.96 against 112.60 at $T=1$ and 110.90 at $T=2$. The optimum is therefore interior, lying at or just above $T=1$, and sharpening is clearly harmful. The capacity argument still explains why very high temperatures fail -- a high temperature asks the student to match the teacher's whole 50,257-way distribution, and a 30M model does not have the capacity for that, so it is better off spending its capacity getting the top token right [1]. But that argument does not extend to $T<1$: a near-one-hot teacher discards the dark knowledge that makes distillation work in the first place, leaving a signal little better than hard labels. A gradient-matched control confirms this is an effect of the target distribution rather than of step size.
 
 **Q4 — How far behind the teacher?** A fair way behind (90.7 vs.\ 29.4), and the gap is actually *understated*: the teacher is judged zero-shot (it was never trained on WikiText-2) while the students train in-domain, so a teacher fine-tuned on WikiText would look even better. This is unsurprising given the $8\times$ smaller Transformer stack.
 
@@ -177,11 +235,13 @@ Here we answer the five questions and address points that came up around the pre
 
 # Conclusions
 
-Our results show that knowledge distillation can greatly improve a smaller GPT-2 model. The Teacher only student achieved a test perplexity of 90.7, followed by Teacher + corpus at 115.6 and Corpus only at 227.2. This means that both methods using teacher guidance performed much better than training only on the true next tokens. Teacher only also gave the best student result in our setup. The temperature sweep selected $T=1$, showing that a sharp teacher distribution worked better than softer distributions for this student. However, all students still performed worse than the GPT-2 teacher, which achieved a test perplexity of 29.4.
+Our results show that knowledge distillation can greatly improve a smaller GPT-2 model. The Teacher only student achieved a test perplexity of 90.7, followed by Teacher + corpus at 115.6 and Corpus only at 227.2. This means that both methods using teacher guidance performed much better than training only on the true next tokens. Teacher only gave the best result among those three. The temperature sweep selected $T=1$ over the softer values it tested, and the later grid confirmed that $T=1$ is close to optimal while showing that going sharper still, to $T=0.5$, is clearly worse. However, all students still performed worse than the GPT-2 teacher, which achieved a test perplexity of 29.4.
 
-The student also provided a clear efficiency improvement. It used 30.3M parameters instead of 124.4M, required about 119 MB instead of 475 MB on disk, and generated about 1.8$\times$ faster than the teacher. Teacher only continued improving until epoch 39, while Corpus only reached its best result at epoch 13. This suggests that the teacher distribution helped reduce overfitting on the small WikiText-2 dataset. Overall, the project shows that distillation can provide a useful balance between model quality, size, and generation speed. Our experiment was limited by one random seed, a small dataset, a fixed $\alpha$, and a short temperature sweep.
+The student also provided a clear efficiency improvement. It used 30.3M parameters instead of 124.4M, required about 119 MB instead of 475 MB on disk, and generated about 1.8$\times$ faster than the teacher. Teacher only continued improving until epoch 39, while Corpus only reached its best result at epoch 13. This suggests that the teacher distribution helped reduce overfitting on the small WikiText-2 dataset. Extending the study with an $\alpha$ and temperature grid sharpened two of these conclusions. Sweeping $\alpha$ showed the best mixture is interior, at $\alpha=0.25$, which improved our best student from a test perplexity of 90.7 to 85.59; a small hard-label term helps, but the corpus signal must stay secondary to the teacher. Extending the temperature axis below 1 showed the optimum is likewise interior: sharpening to $T=0.5$ costs about 43 perplexity, and a gradient-matched control confirmed this reflects the sharpened target itself rather than a change in gradient scale.
 
-Future work should first repeat the experiments with several random seeds and report the average and variation of the results. This would show whether the differences between the three methods are reliable. We could also tune $\alpha$ together with $T$ instead of fixing $\alpha=0.5$. This would test whether Teacher + corpus could perform better with a different balance between the two losses. Training on WikiText-103 would provide more data and may reduce overfitting. A teacher fine-tuned on the same dataset would also give a stronger and fairer upper bound. Testing several student sizes would show how quality, speed, and model size change as student capacity increases. 
+Overall, the project shows that distillation can provide a useful balance between model quality, size, and generation speed. Our experiment was limited by one random seed and a small dataset. We addressed the other two original limitations directly: $\alpha$ was swept over five values, and the temperature axis was extended below 1 and re-run under full training rather than a five-epoch budget. A single seed remains the main threat to the finer distinctions -- the 2.5-point gap between $\alpha=0.25$ and $\alpha=0$, and the 1.7-point gap between $T=2$ and $T=1$, are too small to call without repeated runs.
+
+Future work should first repeat the experiments with several random seeds and report the average and variation of the results. This would show whether the differences between the methods are reliable. A full two-dimensional $\alpha\times T$ grid, rather than the two one-dimensional slices we ran, would show whether the best $\alpha$ shifts with temperature. Raising the epoch cap would also settle the $\alpha=0$ versus $\alpha=0.25$ comparison, since the teacher-only student was still improving when training stopped. Training on WikiText-103 would provide more data and may reduce overfitting. A teacher fine-tuned on the same dataset would also give a stronger and fairer upper bound. Testing several student sizes would show how quality, speed, and model size change as student capacity increases. 
 
 # References
 
@@ -212,8 +272,12 @@ Future work should first repeat the experiments with several random seeds and re
 | Dataset | wikitext-2-raw-v1 | Optimizer | AdamW, lr 5e-4 |
 | Block size | 1024 | Epochs / patience | 50 / 2 |
 | Batch size | 16 | Sweep epochs | 5 |
-| Teacher | GPT-2 small (124.4M) | $\alpha$ | 0.5 |
+| Teacher | GPT-2 small (124.4M) | $\alpha$ (main runs) | 0.5 |
 | Student | 6L / 384 / 6h (30.3M) | Temperatures | 1,2,4,7,10,15 |
+| $\alpha$ grid | 0, 0.25, 0.5, 0.75, 1 at $T=1$ | $T$ grid | 0.5, 1, 2 at $\alpha=0.5$ |
+| Grid training | full, early stopping | Grad-matched control | $T=0.5$, $c$ per epoch |
+
+**Grid hardware.** The $\alpha$ and temperature grid ran on a dual AMD Radeon PRO W7900 machine (48 GB per card, ROCm 7.2.4, PyTorch 2.11, transformers 5.13) with one independent training process pinned per GPU. Two concurrent processes showed no measurable contention (0.930 s/step alone versus 0.930 and 0.943 s/step together), giving close to $2\times$ throughput; `DataParallel` across both cards gave only about 8\%, since the 30M student is too small to amortize per-step replication. The eight runs completed in 4.4 hours. Because Table 1 was produced earlier on different hardware, the grid re-trains the three original configurations so all comparisons within that section are internally consistent.
 
 **C. Sample generations (greedy decoding).** The teacher is fluent; the corpus-only student loops tightly; the teacher-guided students are rough but less degenerate.
 
