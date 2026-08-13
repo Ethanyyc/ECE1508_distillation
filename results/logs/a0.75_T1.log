@@ -1,32 +1,0 @@
-[a0.75_T1] alpha=0.75 temperature=1.0 method=combined grad_match=False
-[a0.75_T1] device=cuda visible=1 env={'torch': '2.11.0+rocm7.2', 'transformers': '5.13.0', 'datasets': '5.0.0', 'device_count': 1, 'gpu': 'AMD Radeon PRO W7900'}
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-[a0.75_T1] batches: train=145 val=15 test=18
-Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 22223.07it/s]
-[a0.75_T1] student params: 30,339,456
-[transformers] `loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
-[a0.75_T1] a0.75_T1 epoch 1/50: train loss 6.4718, val ppl 731.43
-[a0.75_T1] a0.75_T1 epoch 2/50: train loss 5.5309, val ppl 479.09
-[a0.75_T1] a0.75_T1 epoch 3/50: train loss 5.1673, val ppl 389.35
-[a0.75_T1] a0.75_T1 epoch 4/50: train loss 4.9132, val ppl 324.21
-[a0.75_T1] a0.75_T1 epoch 5/50: train loss 4.6842, val ppl 278.80
-[a0.75_T1] a0.75_T1 epoch 6/50: train loss 4.4544, val ppl 237.00
-[a0.75_T1] a0.75_T1 epoch 7/50: train loss 4.2428, val ppl 209.52
-[a0.75_T1] a0.75_T1 epoch 8/50: train loss 4.0492, val ppl 190.77
-[a0.75_T1] a0.75_T1 epoch 9/50: train loss 3.8791, val ppl 176.35
-[a0.75_T1] a0.75_T1 epoch 10/50: train loss 3.7264, val ppl 165.00
-[a0.75_T1] a0.75_T1 epoch 11/50: train loss 3.5890, val ppl 155.71
-[a0.75_T1] a0.75_T1 epoch 12/50: train loss 3.4685, val ppl 151.57
-[a0.75_T1] a0.75_T1 epoch 13/50: train loss 3.3536, val ppl 147.13
-[a0.75_T1] a0.75_T1 epoch 14/50: train loss 3.2509, val ppl 147.18
-[a0.75_T1] a0.75_T1 epoch 15/50: train loss 3.1608, val ppl 145.66
-[a0.75_T1] a0.75_T1 epoch 16/50: train loss 3.0761, val ppl 146.55
-[a0.75_T1] a0.75_T1 epoch 17/50: train loss 2.9937, val ppl 145.62
-[a0.75_T1] a0.75_T1 epoch 18/50: train loss 2.9189, val ppl 148.74
-[a0.75_T1] a0.75_T1 epoch 19/50: train loss 2.8497, val ppl 149.90
-[a0.75_T1] Early stopping a0.75_T1: validation perplexity did not improve.
-[a0.75_T1] Restored a0.75_T1 to epoch 17 (val ppl 145.62)
-[a0.75_T1] final: val ppl 145.62, test ppl 152.44
-Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  9.64it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  9.63it/s]
-[a0.75_T1] saved checkpoint -> /home/jarvis/ECE1508_distillation/checkpoints/a0.75_T1
-[a0.75_T1] wrote /home/jarvis/ECE1508_distillation/results/runs/a0.75_T1.json (best epoch 17, best val ppl 145.62, test ppl 152.44)

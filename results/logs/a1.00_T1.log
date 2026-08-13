@@ -1,29 +1,0 @@
-[a1.00_T1] alpha=1.0 temperature=1.0 method=corpus_only grad_match=False
-[a1.00_T1] device=cuda visible=0 env={'torch': '2.11.0+rocm7.2', 'transformers': '5.13.0', 'datasets': '5.0.0', 'device_count': 1, 'gpu': 'AMD Radeon PRO W7900'}
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-[a1.00_T1] batches: train=145 val=15 test=18
-Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 21689.62it/s]
-[a1.00_T1] student params: 30,339,456
-[transformers] `loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
-[a1.00_T1] a1.00_T1 epoch 1/50: train loss 7.4948, val ppl 1034.24
-[a1.00_T1] a1.00_T1 epoch 2/50: train loss 6.6607, val ppl 663.79
-[a1.00_T1] a1.00_T1 epoch 3/50: train loss 6.2837, val ppl 524.78
-[a1.00_T1] a1.00_T1 epoch 4/50: train loss 6.0438, val ppl 447.05
-[a1.00_T1] a1.00_T1 epoch 5/50: train loss 5.8358, val ppl 405.85
-[a1.00_T1] a1.00_T1 epoch 6/50: train loss 5.6530, val ppl 365.96
-[a1.00_T1] a1.00_T1 epoch 7/50: train loss 5.4787, val ppl 331.78
-[a1.00_T1] a1.00_T1 epoch 8/50: train loss 5.3035, val ppl 303.96
-[a1.00_T1] a1.00_T1 epoch 9/50: train loss 5.1251, val ppl 277.50
-[a1.00_T1] a1.00_T1 epoch 10/50: train loss 4.9515, val ppl 258.60
-[a1.00_T1] a1.00_T1 epoch 11/50: train loss 4.7793, val ppl 243.17
-[a1.00_T1] a1.00_T1 epoch 12/50: train loss 4.6180, val ppl 230.93
-[a1.00_T1] a1.00_T1 epoch 13/50: train loss 4.4595, val ppl 222.61
-[a1.00_T1] a1.00_T1 epoch 14/50: train loss 4.3103, val ppl 217.50
-[a1.00_T1] a1.00_T1 epoch 15/50: train loss 4.1733, val ppl 217.70
-[a1.00_T1] a1.00_T1 epoch 16/50: train loss 4.0430, val ppl 217.62
-[a1.00_T1] Early stopping a1.00_T1: validation perplexity did not improve.
-[a1.00_T1] Restored a1.00_T1 to epoch 14 (val ppl 217.50)
-[a1.00_T1] final: val ppl 217.50, test ppl 226.90
-Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00, 10.45it/s]
-[a1.00_T1] saved checkpoint -> /home/jarvis/ECE1508_distillation/checkpoints/a1.00_T1
-[a1.00_T1] wrote /home/jarvis/ECE1508_distillation/results/runs/a1.00_T1.json (best epoch 14, best val ppl 217.50, test ppl 226.90)

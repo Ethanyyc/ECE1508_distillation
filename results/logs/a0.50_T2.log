@@ -1,36 +1,0 @@
-[a0.50_T2] alpha=0.5 temperature=2.0 method=combined grad_match=False
-[a0.50_T2] device=cuda visible=0 env={'torch': '2.11.0+rocm7.2', 'transformers': '5.13.0', 'datasets': '5.0.0', 'device_count': 1, 'gpu': 'AMD Radeon PRO W7900'}
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-[a0.50_T2] batches: train=145 val=15 test=18
-Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 19628.06it/s]
-[a0.50_T2] student params: 30,339,456
-[transformers] `loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
-[a0.50_T2] a0.50_T2 epoch 1/50: train loss 6.0240, val ppl 809.74
-[a0.50_T2] a0.50_T2 epoch 2/50: train loss 4.9784, val ppl 516.49
-[a0.50_T2] a0.50_T2 epoch 3/50: train loss 4.5732, val ppl 398.75
-[a0.50_T2] a0.50_T2 epoch 4/50: train loss 4.3178, val ppl 333.17
-[a0.50_T2] a0.50_T2 epoch 5/50: train loss 4.1129, val ppl 288.24
-[a0.50_T2] a0.50_T2 epoch 6/50: train loss 3.9260, val ppl 249.76
-[a0.50_T2] a0.50_T2 epoch 7/50: train loss 3.7393, val ppl 218.17
-[a0.50_T2] a0.50_T2 epoch 8/50: train loss 3.5632, val ppl 189.09
-[a0.50_T2] a0.50_T2 epoch 9/50: train loss 3.4085, val ppl 169.66
-[a0.50_T2] a0.50_T2 epoch 10/50: train loss 3.2674, val ppl 154.21
-[a0.50_T2] a0.50_T2 epoch 11/50: train loss 3.1453, val ppl 143.56
-[a0.50_T2] a0.50_T2 epoch 12/50: train loss 3.0384, val ppl 133.96
-[a0.50_T2] a0.50_T2 epoch 13/50: train loss 2.9447, val ppl 128.28
-[a0.50_T2] a0.50_T2 epoch 14/50: train loss 2.8642, val ppl 123.10
-[a0.50_T2] a0.50_T2 epoch 15/50: train loss 2.7922, val ppl 119.59
-[a0.50_T2] a0.50_T2 epoch 16/50: train loss 2.7284, val ppl 117.12
-[a0.50_T2] a0.50_T2 epoch 17/50: train loss 2.6693, val ppl 113.84
-[a0.50_T2] a0.50_T2 epoch 18/50: train loss 2.6195, val ppl 110.68
-[a0.50_T2] a0.50_T2 epoch 19/50: train loss 2.5737, val ppl 110.59
-[a0.50_T2] a0.50_T2 epoch 20/50: train loss 2.5289, val ppl 108.04
-[a0.50_T2] a0.50_T2 epoch 21/50: train loss 2.4892, val ppl 107.43
-[a0.50_T2] a0.50_T2 epoch 22/50: train loss 2.4513, val ppl 107.70
-[a0.50_T2] a0.50_T2 epoch 23/50: train loss 2.4188, val ppl 107.88
-[a0.50_T2] Early stopping a0.50_T2: validation perplexity did not improve.
-[a0.50_T2] Restored a0.50_T2 to epoch 21 (val ppl 107.43)
-[a0.50_T2] final: val ppl 107.43, test ppl 110.90
-Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00, 11.08it/s]
-[a0.50_T2] saved checkpoint -> /home/jarvis/ECE1508_distillation/checkpoints/a0.50_T2
-[a0.50_T2] wrote /home/jarvis/ECE1508_distillation/results/runs/a0.50_T2.json (best epoch 21, best val ppl 107.43, test ppl 110.90)
